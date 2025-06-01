@@ -1,0 +1,23 @@
+:root {
+  --el-color-success: #00BF63;   
+  --el-color-primary: #00BF63;   
+  --el-color-warning: #FFDE59;   
+  --el-color-danger:  #C50101;   
+  --color-text-white: white;   
+  --color-text-black: black;   
+  --el-input-focus-border-color: #00BF63;
+  --height-header: 80px
+}
+
+main {
+  margin-top: var(--height-header);
+}
+
+
+.main-title {
+  margin: 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+  font-size: 40px;
+}
