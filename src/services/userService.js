@@ -11,6 +11,9 @@ const userService = {
     localStorage.setItem('token', response.data.token);
 
     const userResponse = await this.getMe();
+    
+    const { setUser } = useAuth()
+    setUser(userResponse.data)
 
     return userResponse.data;
   },
@@ -32,8 +35,26 @@ const userService = {
     return userResponse
   },
 
+  createUserWithRole({ username, email, password, role }) {
+    return api.post('/auth/admin/users', {
+      username,
+      email,
+      password,
+      role
+    });
+  },
+
+
   getMe() {
   return api.get('/users/me');
+  },
+
+  updateProfile({ username, email }) {
+    return api.patch('/users/me', { username, email });
+  },
+
+  updatePassword({ oldPassword, newPassword }) {
+    return api.patch('/users/me/password', { oldPassword, newPassword });
   },
 
   logout() {
@@ -60,6 +81,23 @@ const userService = {
   deletePersonalData() {
     return api.delete('/users/me/data');
   },
+
+  getAllUsers() {
+    return api.get('/users');
+  },
+
+  activateUser(id) {
+    return api.patch(`/users/${id}/activate`);
+  },
+
+  deactivateUser(id) {
+    return api.patch(`/users/${id}/deactivate`);
+  },
+
+  deleteUser(id) {
+    return api.delete(`/users/${id}`);
+  }
+
 }
   
 export default userService

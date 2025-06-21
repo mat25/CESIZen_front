@@ -1,35 +1,56 @@
 <template>
   <div class="home-container">
     <div class="home-image">
-        <img src="@/assets/images/big-logo.png" alt="Logo" class="logo" />
+      <img src="@/assets/images/big-logo.png" alt="Logo" class="logo" />
     </div>
 
     <p>CESIZen vous aide à mieux comprendre et gérer votre stress grâce à des outils interactifs.</p>
 
     <div class="home-card-container">
-        <el-card shadow="always">
-            <h1 class="home-card-title">Ressources sur la santé mentale</h1>
-            <p>Découvrez des conseils et ressources pour mieux gérer votre stress.</p>
-            <el-button type="success" tag="router-link" to="/ressources" class="home-card-button">En savoir plus</el-button>
-        </el-card>
-        <el-card shadow="always">
-            <h1 class="home-card-title">Diagnostic de stress</h1>
-            <p>Évaluez votre niveau de stress avec un test basé sur l’échelle de Holmes et Rahe.</p>
-            <el-button type="success" tag="router-link" to="/diagnostics" class="home-card-button">En savoir plus</el-button>
-        </el-card>
+      <el-card shadow="always">
+        <h1 class="section-label">Ressources sur la santé mentale</h1>
+        <p>Découvrez des conseils et ressources pour mieux gérer votre stress.</p>
+        <el-button
+          type="success"
+          tag="router-link"
+          :to="ressourcesLink"
+          class="home-card-button"
+        >
+          En savoir plus
+        </el-button>
+      </el-card>
+      <el-card shadow="always">
+        <h1 class="section-label">Diagnostic de stress</h1>
+        <p>Évaluez votre niveau de stress avec un test basé sur l’échelle de Holmes et Rahe.</p>
+        <el-button
+          type="success"
+          tag="router-link"
+          :to="diagnosticsLink"
+          class="home-card-button"
+        >
+          En savoir plus
+        </el-button>
+      </el-card>
     </div>
-
-
-
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useAuth } from '@/composables/useAuth'
 
 const route = useRoute()
+const { user } = useAuth()
+
+const ressourcesLink = computed(() =>
+  user.value?.role?.name === 'ADMIN' ? '/admin/ressources' : '/ressources'
+)
+
+const diagnosticsLink = computed(() =>
+  user.value?.role?.name === 'ADMIN' ? '/admin/diagnostics' : '/diagnostics'
+)
 
 onMounted(() => {
   const successMessage = route.query.successMessage as string | undefined
@@ -45,6 +66,7 @@ onMounted(() => {
   }
 })
 </script>
+
 
 <style scoped>
 .home-container {
@@ -84,11 +106,6 @@ onMounted(() => {
     gap: 40px;
     flex-wrap: wrap;
     text-align: center;
-}
-
-.home-card-title {
-  font-size: 24px;
-  margin-bottom: 20px;
 }
 
 .home-card-button {

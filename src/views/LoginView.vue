@@ -3,7 +3,7 @@
   <el-container class="auth-container">
     <!-- Connexion -->
     <el-card class="auth-card" shadow="always">
-      <h1 class="auth-title">J’ai déjà un compte</h1>
+      <h1 class="section-label">J’ai déjà un compte</h1>
 
       <el-form @submit.prevent="handleLogin" :model="{ username, password }" label-position="top">
         <el-input
@@ -11,7 +11,7 @@
           placeholder="Pseudo"
           clearable
           :disabled="loading"
-          class="auth-input"
+          class="form-input"
         />
 
         <el-input
@@ -20,7 +20,7 @@
           show-password
           clearable
           :disabled="loading"
-          class="auth-input"
+          class="form-input"
         />
 
         <div class="forgot-password">
@@ -51,12 +51,12 @@
 
     <!-- Inscription -->
     <el-card class="auth-card" shadow="always">
-      <h1 class="auth-title">Je crée mon compte</h1>
+      <h1 class="section-label">Je crée mon compte</h1>
 
       <el-form @submit.prevent="handleRegister" :model="registerForm" label-position="top">
-        <el-input v-model="registerForm.username" placeholder="Pseudo" clearable :disabled="registerLoading" class="auth-input" />
-        <el-input v-model="registerForm.email" placeholder="E-mail" clearable :disabled="registerLoading" class="auth-input" />
-        <el-input v-model="registerForm.emailConfirm" placeholder="Confirmation e-mail" clearable :disabled="registerLoading" class="auth-input" />
+        <el-input v-model="registerForm.username" placeholder="Pseudo" clearable :disabled="registerLoading" class="form-input" />
+        <el-input v-model="registerForm.email" placeholder="E-mail" clearable :disabled="registerLoading" class="form-input" />
+        <el-input v-model="registerForm.emailConfirm" placeholder="Confirmation e-mail" clearable :disabled="registerLoading" class="form-input" />
 
         <el-input
           v-model="registerForm.password"
@@ -64,10 +64,10 @@
           show-password
           clearable
           :disabled="registerLoading"
-          class="auth-input"
+          class="form-input"
         />
 
-        <small class="password-help">
+        <small class="small-text">
           Votre mot de passe de 8 caractères minimum, doit contenir au moins un chiffre, une minuscule, une majuscule et un caractère spécial (#@$!%*?&).
         </small>
 
@@ -77,7 +77,7 @@
           show-password
           clearable
           :disabled="registerLoading"
-          class="auth-input"
+          class="form-input"
         />
 
         <el-alert
@@ -215,16 +215,6 @@ const handleRegister = async () => {
   padding: 30px;
 }
 
-.auth-title {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.auth-input {
-  margin-bottom: 16px;
-}
-
 .auth-button {
   width: 100%;
 }
@@ -261,7 +251,5 @@ const handleRegister = async () => {
   display: block;
   margin-top: -10px;
   margin-bottom: 16px;
-  font-size: 12px;
-  color: #888;
 }
 </style>

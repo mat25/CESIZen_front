@@ -13,11 +13,11 @@
 
     <transition name="fade-slide">
       <nav v-if="menuOpen" class="nav-links-mobile">
-        <router-link to="/" class="nav-link" @click="closeMenu">Accueil</router-link>
-        <router-link to="/ressources" class="nav-link" @click="closeMenu">Ressources</router-link>
-        <router-link to="/diagnostics" class="nav-link" @click="closeMenu">Diagnostics</router-link>
+        <router-link to="/admin/ressources" class="nav-link" @click="closeMenu">Ressources</router-link>
+        <router-link to="/admin/diagnostics" class="nav-link" @click="closeMenu">Diagnostics</router-link>
+        <router-link to="/admin/comptes" class="nav-link" @click="closeMenu">Comptes</router-link>
         <el-button
-          type="success"
+          type="warning"
           :circle="false"
           tag="router-link"
           :to="user ? '/profile' : '/login'"
@@ -30,11 +30,11 @@
     </transition>
 
     <nav class="nav-links-desktop">
-      <router-link to="/" class="nav-link">Accueil</router-link>
-      <router-link to="/ressources" class="nav-link">Ressources</router-link>
-      <router-link to="/diagnostics" class="nav-link">Diagnostics</router-link>
+      <router-link to="/admin/ressources" class="nav-link" @click="closeMenu">Ressources</router-link>  
+      <router-link to="/admin/diagnostics" class="nav-link" @click="closeMenu">Diagnostics</router-link>
+      <router-link to="/admin/comptes" class="nav-link" @click="closeMenu">Comptes</router-link>
       <el-button
-        type="success"
+        type="warning"
         :circle="false"
         tag="router-link"
         :to="user ? '/profile' : '/login'"

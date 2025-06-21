@@ -14,21 +14,21 @@
     <div class="forms-wrapper">
       <!-- Formulaire modif infos perso -->
       <el-card class="profile-card" shadow="always">
-        <h2 class="profile-title">Modifier vos informations personnelles</h2>
+        <h2 class="profile-title section-label">Modifier vos informations personnelles</h2>
         <el-form @submit.prevent="handleUpdateInfo" :model="infoForm" label-position="top">
           <el-input
             v-model="infoForm.username"
             placeholder="Pseudo"
             clearable
             :disabled="infoLoading"
-            class="profile-input"
+            class="form-input"
           />
           <el-input
             v-model="infoForm.email"
             placeholder="Email"
             clearable
             :disabled="infoLoading"
-            class="profile-input"
+            class="form-input"
           />
           <el-form-item>
             <el-button
@@ -49,31 +49,34 @@
 
       <!-- Formulaire modif mot de passe -->
       <el-card class="profile-card" shadow="always">
-        <h2 class="profile-title">Modifier votre mot de passe</h2>
+        <h2 class="profile-title section-label">Modifier votre mot de passe</h2>
         <el-form @submit.prevent="handleUpdatePassword" :model="passwordForm" label-position="top">
           <el-input
             v-model="passwordForm.oldPassword"
             type="password"
             placeholder="Ancien mot de passe"
             clearable
+            show-password
             :disabled="passwordLoading"
-            class="profile-input"
+            class="form-input"
           />
           <el-input
             v-model="passwordForm.newPassword"
             type="password"
             placeholder="Nouveau mot de passe"
             clearable
+            show-password
             :disabled="passwordLoading"
-            class="profile-input"
+            class="form-input"
           />
           <el-input
             v-model="passwordForm.newPasswordConfirm"
             type="password"
+            show-password
             placeholder="Confirmation nouveau mot de passe"
             clearable
             :disabled="passwordLoading"
-            class="profile-input"
+            class="form-input"
           />
           <el-form-item>
             <el-button
@@ -133,8 +136,6 @@
         </el-button>
     </div>
   </div>
-  
-
 
 </template>
 
@@ -206,7 +207,12 @@ const handleUpdatePassword = async () => {
     passwordForm.value.newPassword = ''
     passwordForm.value.newPasswordConfirm = ''
   } catch (err) {
-    message.value = err.response?.data?.message || "Erreur lors de la modification du mot de passe."
+    const response = err.response?.data
+    if (response?.errors && Array.isArray(response.errors)) {
+      message.value = response.errors.join(', ')
+    } else {
+      message.value = response?.message || "Erreur lors de la modification du mot de passe."
+    }
     messageType.value = "error"
   } finally {
     passwordLoading.value = false
@@ -274,13 +280,8 @@ const handleDeleteData = async () => {
 }
 
 .profile-title {
-  font-size: 24px;
   text-align: center;
   margin-bottom: 20px;
-}
-
-.profile-input {
-  margin-bottom: 16px;
 }
 
 .profile-button {
