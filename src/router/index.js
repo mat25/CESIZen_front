@@ -12,6 +12,8 @@ import AdminUsersView from '@/views/admin/AdminUsersView.vue'
 import AdminResourcesView from '@/views/admin/AdminResourcesView.vue'
 import AdminDiagnosticsView from '@/views/admin/AdminDiagnosticsView.vue'
 import NotFoundView from '@/views/NotFound.vue'
+import ForgotPassword from '@/views/ForgotPasswordView.vue'
+import ResetPassword from '@/views/ResetPasswordView.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
@@ -21,6 +23,8 @@ const routes = [
   { path: '/ressources/:id', name: 'RessourceDetail', component: ResourceDetailView },
   { path: '/diagnostic', name: 'Diagnostic', component: DiagnosticView },
   { path: '/diagnostics', name: 'Diagnostics', component: DiagnosticsView },
+  { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
+  { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
 
   // Admin
   { path: '/admin/comptes', name: 'AdminUsers', component: AdminUsersView, meta: { requiresAuth: true, requiresAdmin: true } },

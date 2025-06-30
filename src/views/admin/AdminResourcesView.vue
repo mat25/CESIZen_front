@@ -8,9 +8,8 @@
     </div>
 
     <div class="section-label">Liste des ressources</div>
-    <el-table :data="resources" style="width: 100%" class="resource-table">
+    <el-table :data="paginatedResources" style="width: 100%" class="resource-table">
       <el-table-column prop="title" label="Titre" sortable />
-
       <el-table-column label="Gestion" align="center">
         <template #default="{ row }">
           <div class="action-buttons">
@@ -20,6 +19,16 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      v-if="resources.length > pageSize"
+      background
+      layout="prev, pager, next"
+      :total="resources.length"
+      :page-size="pageSize"
+      @current-change="currentPage = $event"
+      class="table-pagination"
+    />
 
     <!-- Modal de création/modification -->
     <ResourceFormModal
@@ -31,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import resourceService from '@/services/resourceService'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import ResourceFormModal from '@/components/ResourceFormModal.vue'
@@ -39,6 +48,14 @@ import ResourceFormModal from '@/components/ResourceFormModal.vue'
 const resources = ref([])
 const showModal = ref(false)
 const selectedResource = ref(null)
+
+const pageSize = 15
+const currentPage = ref(1)
+
+const paginatedResources = computed(() => {
+  const start = (currentPage.value - 1) * pageSize
+  return resources.value.slice(start, start + pageSize)
+})
 
 const fetchResources = async () => {
   try {
@@ -94,6 +111,11 @@ onMounted(fetchResources)
 }
 .resource-table {
   margin-top: 20px;
+}
+.table-pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
 }
 .action-buttons {
   display: flex;

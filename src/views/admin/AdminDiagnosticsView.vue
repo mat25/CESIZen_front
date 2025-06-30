@@ -4,7 +4,7 @@
 
     <!-- Événements -->
     <div class="section-label">Événements de stress</div>
-    <el-table :data="events" style="width: 100%" class="diagnostic-table">
+    <el-table :data="paginatedEvents" style="width: 100%" class="diagnostic-table">
       <el-table-column prop="label" label="Événement" />
       <el-table-column prop="points" label="Points" width="100" />
       <el-table-column label="Gestion" align="center" width="200">
@@ -14,13 +14,22 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      v-if="events.length > pageSize"
+      background
+      layout="prev, pager, next"
+      :total="events.length"
+      :page-size="pageSize"
+      @current-change="currentEventPage = $event"
+      class="table-pagination"
+    />
     <div class="table-actions">
       <el-button type="success" @click="showCreateEvent = true">Ajouter un événement</el-button>
     </div>
 
     <!-- Résultats -->
     <div class="section-label">Plages de résultats</div>
-    <el-table :data="ranges" style="width: 100%" class="diagnostic-table">
+    <el-table :data="paginatedRanges" style="width: 100%" class="diagnostic-table">
       <el-table-column prop="minPoints" label="Min" width="100" />
       <el-table-column prop="maxPoints" label="Max" width="100" />
       <el-table-column prop="message" label="Message" />
@@ -31,6 +40,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      v-if="ranges.length > pageSize"
+      background
+      layout="prev, pager, next"
+      :total="ranges.length"
+      :page-size="pageSize"
+      @current-change="currentRangePage = $event"
+      class="table-pagination"
+    />
     <div class="table-actions">
       <el-button type="success" @click="showCreateRange = true">Ajouter un résultat</el-button>
     </div>
@@ -44,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import diagnosticService from '@/services/diagnosticService'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import EventEditModal from '@/components/EventEditModal.vue'
@@ -54,6 +72,20 @@ import CreateRangeModal from '@/components/CreateRangeModal.vue'
 
 const events = ref([])
 const ranges = ref([])
+
+const pageSize = 10
+const currentEventPage = ref(1)
+const currentRangePage = ref(1)
+
+const paginatedEvents = computed(() => {
+  const start = (currentEventPage.value - 1) * pageSize
+  return events.value.slice(start, start + pageSize)
+})
+
+const paginatedRanges = computed(() => {
+  const start = (currentRangePage.value - 1) * pageSize
+  return ranges.value.slice(start, start + pageSize)
+})
 
 const showEventModal = ref(false)
 const showRangeModal = ref(false)
@@ -78,14 +110,11 @@ const fetchData = async () => {
 
 const deleteEvent = async (id) => {
   try {
-    await ElMessageBox.confirm(
-      'Supprimer cet événement ?', 
-      'Confirmation', 
-      { 
-        type: 'warning',
-        confirmButtonText: 'Supprimer',
-        cancelButtonText: 'Annuler',
-      })
+    await ElMessageBox.confirm('Supprimer cet événement ?', 'Confirmation', {
+      type: 'warning',
+      confirmButtonText: 'Supprimer',
+      cancelButtonText: 'Annuler',
+    })
     await diagnosticService.deleteEvent(id)
     ElMessage.success('Événement supprimé.')
     fetchData()
@@ -96,14 +125,11 @@ const deleteEvent = async (id) => {
 
 const deleteRange = async (id) => {
   try {
-    await ElMessageBox.confirm(
-      'Supprimer cette plage ?', 
-      'Confirmation', 
-      { 
-        type: 'warning',
-        confirmButtonText: 'Supprimer',
-        cancelButtonText: 'Annuler',
-      })
+    await ElMessageBox.confirm('Supprimer cette plage ?', 'Confirmation', {
+      type: 'warning',
+      confirmButtonText: 'Supprimer',
+      cancelButtonText: 'Annuler',
+    })
     await diagnosticService.deleteRange(id)
     ElMessage.success('Plage supprimée.')
     fetchData()
@@ -135,4 +161,10 @@ onMounted(fetchData)
   text-align: center;
   margin: 20px 0;
 }
+.table-pagination {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
 </style>

@@ -96,8 +96,14 @@ const userService = {
 
   deleteUser(id) {
     return api.delete(`/users/${id}`);
-  }
+  },
 
+  requestPasswordReset(email) {
+    return api.post(`${API_URL}/auth/reset-password/request`, { email });
+  },
+  confirmPasswordReset(token, newPassword) {
+    return api.post(`${API_URL}/auth/reset-password/confirm`, { token, newPassword });
+  },
 }
   
 export default userService
